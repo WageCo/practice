@@ -4,85 +4,40 @@
  * [975] 奇偶跳
  */
 #include <bits/stdc++.h>
-using std::list;
-using std::vector;
-using std::set;
-
+/** 来源
+ * https://leetcode.com/problems/odd-even-jump/discuss/1415400/s%2B%2B-64ms-26mb.-O(N*logN)-mem-O9N)
+ * dp[i].odd = dp[odd_jump_index[i]].even
+ * dp[i].even = dp[even_jump_index[i]].odd
+ * */
 // @lc code=start
 class Solution {
    public:
     int oddEvenJumps(vector<int>& arr) {
-        int i = 0, j = 0;
-        int step = 0;
-        int current = arr[i];
-        int temp = current;
-        int jj = -1;
-        arr_size = arr.size();
-        if (arr_size == 1) {
-            return 1;
-        }
-        while (1) {
-            ++step;
-            current = arr[j];
-            temp = current;
-            jj = -1;
-            if (step % 2 == 0) {
-                // operator is even jump
-                for (int k = j + 1; k < arr_size; ++k) {
-                    if (arr[k] <= current) {
-                        if (jj == -1) {
-                            temp = arr[k];
-                            jj = k;
-                            continue;
-                        }
-                        if (temp < arr[k]) {
-                            temp = arr[k];
-                            jj = k;
-                        }
-                    }
-                }
-            } else {
-                // operator is odd jump
-                for (int k = j + 1; k < arr_size; ++k) {
-                    if (arr[k] >= current) {
-                        if (jj == -1) {
-                            temp = arr[k];
-                            jj = k;
-                            continue;
-                        }
-                        if (temp > arr[k]) {
-                            temp = arr[k];
-                            jj = k;
-                        }
-                    }
-                }
+        std::map<int, std::pair<bool, bool>> dp;  // 数组+每个节点的奇偶跳状态
+        int arr_size = arr.size();
+        int count = 1;
+        if (arr_size <= 1) return arr_size;
+        dp[arr[arr_size - 1]] =
+            std::make_pair(true, true);  // 最后一位设置为最佳起始点
+        for (auto i = arr_size - 2; i >= 0; --i) {  // 从后向前
+            int temp = arr[i];
+            auto curstatus = std::make_pair(false, false);
+            auto it = dp.lower_bound(temp); // 查找 >= temp 的key
+            if (it != dp.end()) {
+                curstatus.first =
+                    it->second.second;  // dp[i].odd = dp[odd_jump_index[i]].even
             }
-            if (jj != -1) {
-                j = jj;
-            } else {
-                ++i;
-                j = i;
-                step = 0;
-                if (i == arr_size) {
-                    break;
-                }
+            if (it != dp.end() && it->first == temp) {  // 偶跳是指 小于等于的最大值 
+                curstatus.second =
+                    it->second.first;  // dp[i].even = dp[even_jump_index[i]].odd
+            } else if (it != dp.begin()) {  // --it是确保小于当前值的最大值
+                --it;
+                curstatus.second = it->second.first;
             }
-            if (j == arr_size - 1 && i != j) {
-                ++i;
-                j = i;
-                ++count;
-                step = 0;
-            }
-            if (i == arr_size - 1) {
-                ++count;
-                break;
-            }
+            count += (curstatus.first == true);  //因为第一次为奇跳
+            dp[temp] = curstatus;
         }
         return count;
     }
-
-   private:
-    int count = 0;
-    int arr_size;
 };
 // @lc code=end
