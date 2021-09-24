@@ -6,32 +6,20 @@
 #include <bits/stdc++.h>
 using std::string;
 using std::vector;
+using std::istringstream;
 // @lc code=start
 class Solution {
 public:
     int isPrefixOfWord(string sentence, string searchWord) {
-        string words;
+        string word;
         int count = 0;
-        int index = 0;
-        int pos = sentence.find_first_of(' ', index);
-        if (pos == sentence.npos) return -1;
-        words = sentence.substr(index, pos);
-        while(!words.empty()){
+        istringstream ss(sentence); // istringstream 分割
+        while (ss >> word)
+        {
             ++count;
-            int temp_pos = words.find(searchWord);
-            if (temp_pos != words.npos && temp_pos == 0){
+            int pos = word.find(searchWord);
+            if (pos != word.npos && pos == 0)
                 return count;
-            }
-            if (pos == sentence.npos) break;    // 最后一个单词判断玩 需要跳出循环
-            index = pos + 1;
-            words.clear();
-            if (index < sentence.size()){
-                pos = sentence.find_first_of(' ', index);
-                if (pos == sentence.npos){
-                    words = sentence.substr(index, sentence.size() - index);
-                }
-                words = sentence.substr(index, pos - index);
-            }
         }
         return -1;
     }
