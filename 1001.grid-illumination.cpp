@@ -5,49 +5,46 @@
  */
 #include <bits/stdc++.h>
 using std::vector;
-using std::queue;
+using std::unordered_map;
+using std::unordered_set;
+// think like votrubac
 // @lc code=start
 class Solution {
 public:
-    using coordinate = std::pair<int, int>;
     #define make_coordinate(x, y) std::make_pair(x, y)
-    int isLightOn(int n, vector<vector<int>>& lamps, coordinate coordinate_){
-        int x1 = coordinate_.first - 1 >= 0 ? coordinate_.first - 1 : 0;
-        int x2 = coordinate_.first + 1 < n ? coordinate_.first + 1 : n - 1;
-        int y1 = coordinate_.second - 1 >= 0 ? coordinate_.second - 1 : 0;
-        int y2 = coordinate_.second + 1 < n ? coordinate_.second + 1 : n - 1;
-        int ret = 0;
-        for (int i = 0; i < lamps.size(); ++i) {
-            if (lamps[i][0] == -1 && lamps[i][1] == -1)
-                continue;
-            auto v0 = make_coordinate(lamps[i][0], lamps[i][1]);
-            if (v0.first >= x1 && v0.first <= x2 && 
-                v0.second >= y1 && v0.second <= y2) {
-                // 有灯的点标记为无用的点
-                lamps[i][0] = -1;
-                lamps[i][1] = -1;
-            }
-            if (v0.first == coordinate_.first ||
-                v0.second == coordinate_.second ||
-                v0.first - v0.second ==
-                    coordinate_.first - coordinate_.second ||
-                v0.first + v0.second ==
-                    coordinate_.first + coordinate_.second) {
-                // 判断是否亮
-                ret = 1;
-            }
-        }
-        return ret;
-    }
     vector<int> gridIllumination(int n, vector<vector<int>>& lamps, vector<vector<int>>& queries) {
         vector<int> ret;
-        std::for_each(queries.cbegin(), queries.cend(),
-                      [=, &ret, &lamps](const vector<int> &coordinates) {
-                          // 2D
-                          ret.emplace_back(isLightOn(
-                              n, lamps,
-                              make_coordinate(coordinates[0], coordinates[1])));
-                      });
+        unordered_map<int, int> x, y, a_d, d_d;
+        unordered_map<int, unordered_set<int>> ls;
+        for (auto l : lamps) {
+            auto i = l[0];
+            auto j = l[1];
+            // 记录灯的位置 计数+1
+            if (ls[i].insert(j).second)
+                ++x[i], ++y[j], ++a_d[i + j], ++d_d[i - j];
+        }
+        std::for_each(
+            queries.cbegin(), queries.cend(),
+            [&](const vector<int> &coordinate_) { // 2D
+                auto v0 = make_coordinate(coordinate_[0], coordinate_[1]);
+                if (x[v0.first] || y[v0.second] || a_d[v0.first + v0.second] ||
+                    d_d[v0.first - v0.second]) {
+                    ret.emplace_back(1);
+                    for (auto li = v0.first - 1; li <= v0.first + 1; ++li)
+                        for (auto lj = v0.second - 1; lj <= v0.second + 1;
+                             ++lj) {
+                            if (ls[li].erase(lj)) {
+                                // 计数-1
+                                --x[li]; 
+                                --y[lj];
+                                --a_d[li + lj]; 
+                                --d_d[li - lj];
+                            }
+                        }
+                } else {
+                    ret.emplace_back(0);
+                }
+            });
         return ret;
     }
 };
