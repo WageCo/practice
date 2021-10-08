@@ -13,7 +13,7 @@ class Solution {
     std::sort(properties.begin(), properties.end(),
               [](vector<int> &it1, vector<int> &it2) {
                 if (it1[0] == it2[0]) {
-                  return (it1[1] > it2[1]);
+                  return (it1[1] > it2[1]); // ignore same attack
                 }
                 return (it1[0] < it2[0]);
               });
