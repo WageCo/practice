@@ -3,23 +3,20 @@
 
 static void BM_Base_add(benchmark::State &state)
 {
-    int a = 1;
-    int b = 1;
+    auto add = [](int a, int b) { return a + b; };
     int sum = 0;
     for (auto _ : state)
     {
-        sum = a + b;
+        sum = add(1, 1);
     }
 }
 
 static void BM_Helper_add(benchmark::State &state)
 {
-    int a = 1;
-    int b = 1;
     int sum = 0;
     for (auto _ : state)
     {
-        sum = helper::add(a, b);
+        sum = helper::add(1, 1);
     }
 }
 
