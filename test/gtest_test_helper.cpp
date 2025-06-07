@@ -1,13 +1,11 @@
 #include <gtest/gtest.h>
 #include "helper.h"
 
-TEST(HelperTests, hello_world_test)
+TEST(HelperTests, helper_add_test)
 {
-    helper::hello_world();
-}
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    int a = 1;
+    int b = 1;
+    int sum = 0;
+    sum = helper::add(a, b);
+    EXPECT_EQ(sum, 2);
 }

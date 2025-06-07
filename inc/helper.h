@@ -3,7 +3,7 @@
 
 namespace helper
 {
-void hello_world();
+int add(int a, int b);
 }
 
 #endif // __MY_HELPER_H__

@@ -1,7 +1,12 @@
 #include "helper.h"
+#include <cstdarg>
 #include <cstdio>
 
-void helper::hello_world()
+namespace helper
 {
-    printf("Hello World\n");
+int add(int a, int b)
+{
+    return (a + b);
 }
+
+} // namespace helper
