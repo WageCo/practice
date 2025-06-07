@@ -1,9 +1,7 @@
 #ifndef __MY_HELPER_H__
 #define __MY_HELPER_H__
 
-namespace helper
-{
-int add(int a, int b);
-}
+// 自动包含helper目录下的所有头文件
+#include "helper/add.h"
 
 #endif // __MY_HELPER_H__
