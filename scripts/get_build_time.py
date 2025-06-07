@@ -5,4 +5,4 @@ def get_build_time():
     return now.strftime("%Y-%m-%d %H:%M:%S")
 
 if __name__ == "__main__":
-    print("现在时间为: ", get_build_time())
+    print("现在时间为: {}".format(get_build_time()))
