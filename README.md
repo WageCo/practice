@@ -1,4 +1,13 @@
-# 练习记录
+# 代码记录
 
-- leetcode
-- codeforces
+## 算法练习(cs)
+
+- leetcode/
+- codeforces/
+
+## C++语言练习(helper库)
+
+- 头文件: inc/
+- 源文件: src/
+- 测试文件: test/
+- 脚本文件: scripts/
