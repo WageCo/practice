@@ -9,10 +9,9 @@ if(NOT DEFINED CMAKE_THIRD_PARTY_PATH)
     set(CMAKE_THIRD_PARTY_PATH "C:/Person/Work/libs/install" CACHE PATH "Path to offline third-party libraries (optional)")
 endif()
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_THIRD_PARTY_PATH}")
-message(STATUS "CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
+# message(STATUS "CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
 
 # 先查找,没有就下载库
-find_package(GTest REQUIRED)
 FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git

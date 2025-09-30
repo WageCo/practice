@@ -14,3 +14,12 @@ TEST(HelperTests, helper_version_test) {
   EXPECT_EQ(version::get_major_version(), version::MAJOR_VERSION);
   EXPECT_EQ(version::get_minor_version(), version::MINOR_VERSION);
 }
+
+TEST(HelperTests, helper_cpp_standard_test) {
+  using namespace helper;
+  EXPECT_EQ(version::get_cpp_standard(), version::CPP_STANDARD);
+  EXPECT_EQ(version::get_cpp_standard(), __cplusplus);
+
+  // 输出当前使用的C++标准
+  std::cout << "C++ Standard: " << version::get_cpp_standard() << std::endl;
+}
