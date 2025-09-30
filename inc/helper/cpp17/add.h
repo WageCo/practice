@@ -16,11 +16,15 @@ inline auto add(const T1& a, const T2& b) ->
   return a + b;
 }
 
-// 针对std::string的特化版本
-template <>
-inline std::string add<std::string>(const std::string& a,
-                                    const std::string& b) {
-  return a + b;
+// 针对char数组 重载版本
+template <size_t N1, size_t N2>
+inline std::string add(const char (&a)[N1], const char (&b)[N2]) {
+  return std::string(a) + b;
+}
+
+// 支持 const char* 重载版本
+inline std::string add(const char* a, const char* b) {
+  return std::string(a) + b;
 }
 
 }  // namespace helper

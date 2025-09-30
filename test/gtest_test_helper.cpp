@@ -7,6 +7,11 @@ TEST(HelperTests, helper_add_test) {
   EXPECT_EQ(add(1.5, 2.5), 4.0);
   EXPECT_EQ(add(std::string("Hello, "), std::string("World!")),
             std::string("Hello, World!"));
+  EXPECT_EQ(add("Hello, ", "World!"), std::string("Hello, World!"));
+
+  const char * s1 = "Good ";
+  const char * s2 = "Morning!";
+  EXPECT_EQ(add(s1, s2), std::string("Good Morning!"));
 
   EXPECT_EQ(add(1, 2.5), 3.5);
   EXPECT_EQ(add(2.5, 1), 3.5);
