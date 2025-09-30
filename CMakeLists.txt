@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.20.0)
+cmake_minimum_required(VERSION 4.1.1)
 project(helper)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -22,10 +22,11 @@ add_custom_command(
     COMMENT "正在执行python脚本"
 )
 
-# 查找gtest和benchmark库
-enable_testing()
-find_package(GTest REQUIRED)
-find_package(benchmark REQUIRED)
+# 添加自定义模块路径
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# 启用测试
+include(ProjectGoogleTest)
 
 # 定义构建测试的函数
 function(build_tests TEST_DIR)
@@ -41,11 +42,18 @@ function(build_tests TEST_DIR)
             list(APPEND LINK_LIBS GTest::gtest GTest::gtest_main)
         endif()
         if(NOT ${BENCHMARK_POS} EQUAL -1)
-            list(APPEND LINK_LIBS benchmark::benchmark)
+            list(APPEND LINK_LIBS benchmark::benchmark benchmark::benchmark_main)
         endif()
         target_link_libraries(${TEST_NAME} ${LINK_LIBS})
         # 添加测试目标
-        add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+        if(NOT ${GTEST_POS} EQUAL -1)
+            gtest_discover_tests(${TEST_NAME})
+        endif()
+        # 另一种添加测试的方法
+        if(NOT ${BENCHMARK_POS} EQUAL -1)
+            # benchmark不需要注册测试, 直接运行即可
+            add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+        endif()
     endforeach()
 endfunction()
 

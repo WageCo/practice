@@ -24,4 +24,4 @@ BENCHMARK(BM_Base_add);
 BENCHMARK(BM_Helper_add);
 
 // Run the benchmark
-BENCHMARK_MAIN();
+// BENCHMARK_MAIN();
