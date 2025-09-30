@@ -5,10 +5,14 @@ include(FetchContent)
 # 如需自定义第三方库安装路径,请设置CMAKE_THIRD_PARTY_PATH变量,否则使用默认路径
 # googeltest和benchmark都安装在这个路径下, googletest的安装module名是GTest, benchmark的安装模块名是benchmark
 # 即 Googletest安装路径名称是GTest, benchmark安装路径名称是benchmark
-option(CMAKE_THIRD_PARTY_PATH "Path to offline third-party libraries (optional)" "C:/Person/Work/libs/install")
+if(NOT DEFINED CMAKE_THIRD_PARTY_PATH)
+    set(CMAKE_THIRD_PARTY_PATH "C:/Person/Work/libs/install" CACHE PATH "Path to offline third-party libraries (optional)")
+endif()
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_THIRD_PARTY_PATH}")
+message(STATUS "CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
 
 # 先查找,没有就下载库
+find_package(GTest REQUIRED)
 FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
