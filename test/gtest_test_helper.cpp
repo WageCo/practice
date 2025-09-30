@@ -2,11 +2,25 @@
 #include <gtest/gtest.h>
 
 TEST(HelperTests, helper_add_test) {
-  int a = 1;
-  int b = 1;
-  int sum = 0;
-  sum = helper::add(a, b);
-  EXPECT_EQ(sum, 2);
+  using namespace helper;
+  EXPECT_EQ(add(1, 2), 3);
+  EXPECT_EQ(add(1.5, 2.5), 4.0);
+  EXPECT_EQ(add(std::string("Hello, "), std::string("World!")),
+            std::string("Hello, World!"));
+
+  EXPECT_EQ(add(1, 2.5), 3.5);
+  EXPECT_EQ(add(2.5, 1), 3.5);
+
+  int a = 10;
+  int b = 20;
+  EXPECT_EQ(add(a, b), 30);
+  EXPECT_EQ(add(a, 2.5), 12.5);
+  EXPECT_EQ(add(2.5, b), 22.5);
+
+  // 以下代码应编译错误, 因为不支持指针类型
+  // int* p1 = &a;
+  // int* p2 = &b;
+  // EXPECT_EQ(add(p1, p2), nullptr);
 }
 
 TEST(HelperTests, helper_version_test) {

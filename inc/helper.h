@@ -5,4 +5,4 @@
 #include "helper/add.h"
 #include "helper/version.h"
 
-#endif // __MY_HELPER_H__
+#endif  // __MY_HELPER_H__
